@@ -35,6 +35,7 @@ Dockerfile*
 *.tmp
 *.bak
 
+volumes
 
 # Archivos de sistema operativo
 .DS_Store

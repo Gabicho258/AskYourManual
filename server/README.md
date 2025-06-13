@@ -35,6 +35,7 @@ project/
 │   ├── load_pdfs.py         # Script para cargar todos los PDFs y procesarlos
 │   └── search_query.py      # Script para hacer búsquedas en los documentos
 │
+├── docker-compose.yml       # Docker Compose configuration file
 └── requirements.txt         # Dependencias del proyecto
 ```
 
@@ -92,11 +93,21 @@ Este proyecto utiliza **Milvus** para almacenar los embeddings de los documentos
    Ejecuta el siguiente comando para descargar y ejecutar Milvus:
 
    ```bash
-   docker pull milvusdb/milvus:v2.0.0
-   docker run -d --name milvus -p 19530:19530 -p 19121:19121 milvusdb/milvus:v2.0.0
+   docker docker compose up -d
    ```
 
-   Esto ejecutará Milvus en los puertos `19530` (para la API) y `19121` (para la interfaz web). Puedes verificar que Milvus está funcionando accediendo a `http://localhost:19121`.
+   Para detener el contenedor
+
+   ````bash
+   docker compose down
+   ``
+   
+   Web UI de Minio: Para la gestión de almacenamiento, accede a:
+   `http://localhost:9091`
+   
+   Web UI de Milvus: Para la gestión de la base de datos y la observabilidad, accede a:
+   `http://localhost:9091/webui/`
+   
 
 ### 5. Configuración
 
