@@ -1,0 +1,41 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pdb
+*.log
+*.bak
+*.swp
+*.egg-info/
+*.dist-info/
+*.idea/
+.vscode/
+
+# Entornos Virtuales
+myenv/
+env/
+venv/
+AskYourManualEnv/
+
+# Milvus
+*.milvus
+
+# Archivos de configuración de IDEs (Visual Studio, PyCharm, etc.)
+.idea/
+.vscode/
+
+# Docker
+docker-compose.override.yml
+Dockerfile*
+.docker/
+
+# Archivos generados
+*.log
+*.tmp
+*.bak
+
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
