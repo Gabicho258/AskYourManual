@@ -24,15 +24,18 @@ def main():
 
     # Indexa cada PDF
     for pdf in tqdm(pdfs, desc="Indexando PDFs"):
-        text = extract_text_from_pdf(pdf)
-        clean = clean_text(text)
-        chunks = safe_chunk_text(clean, max_length=4096)
-        if not chunks:
-            continue
-        vectors = embedder.embed(chunks)
-        index_chunks(
-            client, COLLECTION, vectors, chunks, pdf_name=os.path.basename(pdf)
-        )
+        try:
+            text = extract_text_from_pdf(pdf)
+            clean = clean_text(text)
+            chunks = safe_chunk_text(clean, max_length=4096)
+            if not chunks:
+                continue
+            vectors = embedder.embed(chunks)
+            index_chunks(
+                client, COLLECTION, vectors, chunks, pdf_name=os.path.basename(pdf)
+            )
+        except Exception as e:
+            print(f"[ERROR] Falló el PDF {pdf}: {e}")
 
     # Prueba de búsqueda
     print("\nEjemplo de búsqueda:")

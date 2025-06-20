@@ -2,3 +2,5 @@ qdrant-client
 sentence-transformers
 pypdf
 tqdm
+pdfplumber
+PyMuPDF
