@@ -40,3 +40,5 @@ volumes
 # Archivos de sistema operativo
 .DS_Store
 Thumbs.db
+milvus_data
+qdrant_data
