@@ -1,0 +1,42 @@
+# requirements_python313.txt - Compatible con Python 3.13
+
+# Framework web
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+
+# Validación de datos
+pydantic==2.10.0
+pydantic-settings==2.6.0
+
+# Manejo de archivos
+python-multipart==0.0.12
+aiofiles==24.1.0
+
+# Base de datos vectorial
+qdrant-client==1.12.1
+
+# ML y embeddings - versiones compatibles con Python 3.13
+torch==2.7.1
+numpy==2.1.0
+scikit-learn==1.5.2
+
+# Sentence transformers compatible
+sentence-transformers==3.3.0
+transformers==4.53.2
+
+# Procesamiento de PDFs
+PyPDF2==3.0.1
+pypdf==5.1.0
+
+# Configuración
+python-dotenv==1.0.1
+
+# Análisis de datos
+pandas==2.2.3
+
+# Cliente HTTP
+httpx==0.28.0
+
+# Desarrollo
+pytest==8.3.4
+pytest-asyncio==0.24.0
