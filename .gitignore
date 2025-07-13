@@ -17,7 +17,7 @@ myenv/
 env/
 venv/
 AskYourManualEnv/
-
+node_modules
 # Milvus
 *.milvus
 
@@ -42,3 +42,59 @@ volumes
 Thumbs.db
 milvus_data
 qdrant_data
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Data files
+data/pdfs/*
+data/processed/*
+!data/pdfs/.gitkeep
+!data/processed/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# FastAPI
+.pytest_cache/
