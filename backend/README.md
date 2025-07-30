@@ -73,20 +73,48 @@ docker-compose up -d qdrant
 curl http://localhost:6333/health
 ```
 
-### 4. Configuración de Variables de Entorno
+### 4. Configuración de Variables de Entorno (.env.example --> .env)
 
 Crea un archivo `.env` con:
 
 ```env
-DEBUG=True
+
+# Configuración general
+DEBUG=true
 PORT=8000
+
+# CORS - Sin espacios y comillas
+ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173
+
+# Qdrant
 QDRANT_HOST=localhost
 QDRANT_PORT=6333
 QDRANT_COLLECTION=komatsu_manuals
+
+# PDF Processing
 PDF_STORAGE_PATH=./data/pdfs
+PROCESSED_STORAGE_PATH=./data/processed
+MAX_FILE_SIZE=52428800
+
+# Embeddings
 EMBEDDING_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+EMBEDDING_BATCH_SIZE=32
+
+# Chunking
 CHUNK_SIZE=1000
 CHUNK_OVERLAP=200
+MIN_CHUNK_SIZE=100
+
+# Search
+DEFAULT_SEARCH_LIMIT=10
+MAX_SEARCH_LIMIT=100
+
+# Cache
+CACHE_TTL=3600
+MAX_CACHE_SIZE=1000
+
+# Logging
+LOG_LEVEL=INFO
 ```
 
 ### 5. Ejecutar la Aplicación
@@ -99,22 +127,6 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 python -m app.main
 ```
 
-## 🔍 Estrategias de Búsqueda
-
-### Semántica (`semantic`)
-- Utiliza embeddings para entender el significado contextual
-- Ideal para consultas conceptuales: "procedimientos de seguridad"
-- Funciona con sinónimos y conceptos relacionados
-
-### Híbrida (`hybrid`)
-- Combina búsqueda semántica (70%) y por palabras clave (30%)
-- Balance entre precisión y recall
-- Recomendada para la mayoría de casos de uso
-
-### Palabras Clave (`keyword`)
-- Búsqueda exacta de términos específicos
-- Mejor para códigos, números de parte, referencias exactas
-- Más rápida pero menos flexible
 
 ## 📊 Métricas del Sistema
 
@@ -126,8 +138,6 @@ python -m app.main
 ### Métricas de Precisión y Recall
 - **Precision@K**: Porcentaje de resultados relevantes en los primeros K
 - **Recall@K**: Porcentaje de documentos relevantes encontrados en los primeros K
-- **NDCG@K**: Normalized Discounted Cumulative Gain (calidad de ranking)
-- **MRR**: Mean Reciprocal Rank (posición promedio del primer resultado relevante)
 
 ### Métricas de Calidad
 - **Coherencia Semántica**: Consistencia de los embeddings generados (0-1)
@@ -139,7 +149,6 @@ python -m app.main
 - **Total de búsquedas**: Número acumulado de consultas realizadas
 - **Consultas únicas**: Número de consultas distintas
 - **Resultados promedio**: Número medio de resultados por consulta
-- **Patrones de búsqueda**: Distribución de consultas por hora
 
 ## 🛠️ Endpoints de la API
 
@@ -164,7 +173,6 @@ python -m app.main
 ### Sistema
 - `GET /health` - Estado del sistema
 - `GET /docs` - Documentación Swagger
-- `GET /redoc` - Documentación ReDoc
 
 ## 🔧 Procesamiento de PDFs
 
@@ -179,43 +187,10 @@ python -m app.main
 - **CHUNK_OVERLAP=200**: 20% de solapamiento para mantener contexto
 - **MIN_CHUNK_SIZE=100**: Evita fragmentos muy pequeños sin valor semántico
 
-## 🚦 Monitoreo y Salud del Sistema
-
-### Health Checks
-```bash
-# Estado general
-curl http://localhost:8000/health
-
-# Estado de Qdrant
-curl http://localhost:6333/health
-
-# Información de la colección
-curl http://localhost:6333/collections/komatsu_manuals
-```
-
-### Logs y Debugging
-- Logs configurados en nivel INFO por defecto
-- Logs detallados de procesamiento de PDFs
-- Métricas de rendimiento automáticas
-- Alertas configurables por umbrales
-
-## 🔒 Configuración de Producción
-
-### Variables de Entorno Importantes
-```env
-DEBUG=False
-LOG_LEVEL=WARNING
-ALLOWED_ORIGINS=https://tu-dominio.com
-QDRANT_HOST=qdrant-production
-MAX_FILE_SIZE=52428800
-CACHE_TTL=3600
-```
-
 ### Consideraciones de Seguridad
 - Validación de tipos de archivo (solo PDF)
 - Límites de tamaño de archivo (50MB por defecto)
 - CORS configurado para orígenes específicos
-- Sanitización de nombres de archivo
 
 ## 📈 Optimización de Rendimiento
 
@@ -228,33 +203,3 @@ CACHE_TTL=3600
 - Índices automáticos en campos clave (pdf_name, chunk_id)
 - Configuración de distancia coseno para mejor rendimiento
 - Optimización automática de la colección
-
-### Cache del Sistema
-- Cache de consultas frecuentes (TTL configurable)
-- Cache de sugerencias de búsqueda
-- Invalidación automática de cache
-
-## 🔍 Troubleshooting
-
-### Problemas Comunes
-
-**Error: Collection doesn't exist**
-```bash
-# Crear la colección manualmente
-python -c "
-from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
-client = QdrantClient(host='localhost', port=6333)
-client.create_collection('komatsu_manuals', VectorParams(size=384, distance=Distance.COSINE))
-"
-```
-
-**Error: PDF no se procesa**
-- Verificar que el archivo sea un PDF válido
-- Revisar logs de procesamiento en la consola
-- Verificar que Qdrant esté funcionando
-
-**Latencia alta en búsquedas**
-- Verificar índices en Qdrant
-- Reducir EMBEDDING_BATCH_SIZE
-- Aumentar CACHE_TTL para consultas frecuentes
