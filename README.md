@@ -112,25 +112,10 @@ npm run dev
 **Cuándo usar**: Consultas conceptuales o cuando no conoces términos exactos
 - ✅ "Procedimientos de arranque en frío"
 - ✅ "Problemas de sobrecalentamiento"
-- ✅ "Mantenimiento preventivo trimestral"
+- ✅ "Cambio de aceite"
 
 **Cómo funciona**: Utiliza embeddings para entender el significado y contexto de la consulta, encontrando información relacionada conceptualmente.
 
-### ⚖️ Híbrida (Recomendada)
-**Cuándo usar**: Para la mayoría de consultas generales
-- ✅ "Cambio de filtros hidráulicos D375A"
-- ✅ "Torque de pernos motor 6D125"
-- ✅ "Calibración sistema GPS"
-
-**Cómo funciona**: Combina búsqueda semántica (70%) y por palabras clave (30%) para obtener el mejor balance entre precisión y cobertura.
-
-### 🔤 Palabras Clave
-**Cuándo usar**: Búsquedas exactas de códigos, números de parte, o términos específicos
-- ✅ "PC200-8M0"
-- ✅ "6D125E-3"
-- ✅ "Error code P0001"
-
-**Cómo funciona**: Búsqueda literal de términos específicos en el texto, ideal para referencias exactas.
 
 ## 📈 Métricas y Monitoreo
 
@@ -142,8 +127,6 @@ npm run dev
 ### Métricas de Calidad
 - **Precision@K**: % de resultados relevantes en los primeros K resultados
 - **Recall@K**: % de documentos relevantes encontrados en los primeros K
-- **NDCG@K**: Calidad del ranking de resultados (0-1, mayor es mejor)
-- **MRR**: Posición promedio del primer resultado relevante
 
 ### Métricas de Sistema
 - **Coherencia Semántica**: Consistencia de los embeddings (0-1)
@@ -195,54 +178,6 @@ DEFAULT_SEARCH_LIMIT=10      # Resultados por defecto
 MAX_SEARCH_LIMIT=100         # Máximo resultados permitidos
 ```
 
-#### Frontend (vite.config.ts)
-```typescript
-server: {
-  proxy: {
-    '^/(api|health|docs)': {
-      target: 'http://localhost:8000',
-      changeOrigin: true,
-    },
-  },
-}
-```
-
-## 🔍 Casos de Uso Típicos
-
-### Para Técnicos de Mantenimiento
-- "¿Cada cuántas horas debo cambiar el filtro de aceite?"
-- "Procedimiento para calibrar el sistema hidráulico"
-- "Códigos de error del motor 6D125"
-
-### Para Operadores
-- "Controles de seguridad antes de arrancar"
-- "¿Cómo ajustar la velocidad de trabajo?"
-- "Procedimiento de parada de emergencia"
-
-### Para Supervisores
-- "Especificaciones técnicas para licitación"
-- "Intervalos de mantenimiento preventivo"
-- "Capacidades de carga según modelo"
-
-## 🚦 Monitoreo del Sistema
-
-### Health Checks Automáticos
-```bash
-# Verificar estado general
-curl http://localhost:8000/health
-
-# Estado de la base de datos vectorial
-curl http://localhost:6333/health
-
-# Métricas en tiempo real
-curl http://localhost:8000/api/metrics/realtime
-```
-
-### Indicadores Clave (KPIs)
-- **Disponibilidad del Sistema**: >99.5%
-- **Latencia P95**: <2 segundos
-- **Precisión@5**: >80%
-- **Tasa de Éxito de Indexación**: >95%
 
 ## 🔒 Consideraciones de Seguridad
 
@@ -268,81 +203,6 @@ curl http://localhost:8000/api/metrics/realtime
 ### Guías Específicas
 - [Configuración del Backend](./backend/README.md)
 - [Configuración del Frontend](./frontend/README.md)
-- Documentación de la API REST completa en Swagger
 
-## 🤝 Contribución y Desarrollo
 
-### Estructura de Commits
-```
-feat: nueva funcionalidad
-fix: corrección de bug
-docs: actualización de documentación
-style: cambios de formato
-refactor: refactorización de código
-test: adición de tests
-```
 
-### Flujo de Desarrollo
-1. Fork del repositorio
-2. Crear rama para feature: `git checkout -b feature/nueva-funcionalidad`
-3. Commit de cambios: `git commit -m 'feat: agregar nueva funcionalidad'`
-4. Push a la rama: `git push origin feature/nueva-funcionalidad`
-5. Crear Pull Request
-
-## 🔧 Troubleshooting
-
-### Problemas Comunes
-
-#### Backend no inicia
-```bash
-# Verificar Python y dependencias
-python --version
-pip list | grep fastapi
-
-# Verificar Qdrant
-docker ps | grep qdrant
-curl http://localhost:6333/health
-```
-
-#### Frontend no carga estilos
-```bash
-# Limpiar cache y reinstalar
-rm -rf node_modules package-lock.json
-npm install
-npm run dev
-```
-
-#### Búsquedas sin resultados
-1. Verificar que hay documentos indexados: `GET /api/documents/`
-2. Revisar estado de la colección Qdrant
-3. Probar con diferentes estrategias de búsqueda
-4. Verificar logs del backend para errores
-
-#### Performance lenta
-- Reducir `EMBEDDING_BATCH_SIZE` si hay problemas de memoria
-- Aumentar `CACHE_TTL` para consultas frecuentes
-- Verificar que Qdrant tenga índices creados
-- Monitorear métricas de latencia
-
-## 📞 Soporte
-
-### Logs y Debugging
-```bash
-# Backend logs
-tail -f app.log
-
-# Frontend console
-# Abrir DevTools > Console
-
-# Qdrant logs
-docker logs <qdrant_container_id>
-```
-
-### Información del Sistema
-- **Versión**: 1.0.0
-- **Licencia**: MIT
-- **Soporte**: Consultar documentación técnica y issues en GitHub
-
----
-
-**AskYourManual** - Haciendo la información técnica más accesible a través de la inteligencia artificial.
